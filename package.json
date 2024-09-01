@@ -1,0 +1,13 @@
+{
+  "name": "@nvideo/root",
+  "version": "1.0.0",
+  "description": "my media server",
+  "workspaces": [
+    "packages/apps/*",
+    "packages/shared/*"
+  ],
+  "scripts": {},
+  "git": "https://github.com/neizzz/nvideo",
+  "author": "",
+  "license": "ISC"
+}
