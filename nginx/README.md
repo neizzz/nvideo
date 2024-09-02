@@ -1,1 +1,1 @@
-nginx-vod-module nginx
+nginx setting with `nginx-vod-module`
