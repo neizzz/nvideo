@@ -5,8 +5,7 @@ set -e;
 SOURCE_DIR=/var/webhook/tmp/nvideo/;
 
 rm -rf $SOURCE_DIR;
-mkdir -p $SOURCE_DIR;
-git clone https://github.com/neizzz/nvideo.git $SOURCE_DIR;
+gh repo clone neizzz/nvideo $SOURCE_DIR;
 cd $SOURCE_DIR;
 git checkout master;
 
@@ -18,6 +17,8 @@ EXTERNAL_PORT=9999;
 INTERNAL_PORT=80;
 
 mkdir -p $VIDEO_DIR;
+mkdir -p $HOME/nginx/;
+cp $NGINX_CONF_PATH $HOME/nginx/nginx.conf;
 
 # 컨테이너가 실행 중인지 확인
 if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
@@ -36,7 +37,7 @@ else
         fi
     else
         echo "컨테이너 '$CONTAINER_NAME'가 존재하지 않습니다. 새로 생성 후 실행합니다."
-        docker run -d -p $EXTERNAL_PORT:$INTERNAL_PORT -v $VIDEO_DIR/videos:/opt/static/videos -v $NGINX_CONF_PATH:/usr/local/nginx/conf/nginx.conf --name $CONTAINER_NAME $IMAGE_NAME
+        docker run -d -p $EXTERNAL_PORT:$INTERNAL_PORT -v $VIDEO_DIR:/opt/static/videos -v $NGINX_CONF_PATH:/usr/local/nginx/conf/nginx.conf --name $CONTAINER_NAME $IMAGE_NAME
 
         # 컨테이너가 정상적으로 생성 및 시작되었는지 확인
         if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
