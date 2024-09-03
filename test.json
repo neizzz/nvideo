@@ -1,0 +1,72 @@
+{
+  "id": "nvideo-deploy",
+  "command-working-directory": "/var/webhook",
+  "execute-command": "scripts/nvideo-deploy.sh",
+  "include-command-output-in-response": true,
+  "trigger-rule": {
+    "and": [
+      {
+        "match": {
+          "type": "payload-hmac-sha256",
+          "secret": "b58d233993369412c459219875405f7dc8b5fab6",
+          "parameter": {
+            "source": "header",
+            "name": "X-Hub-Signature-256"
+          }
+        }
+      },
+      {
+        "or": [
+          {
+            "and": [
+              {
+                "match": {
+                  "type": "value",
+                  "value": "master",
+                  "parameter": {
+                    "source": "payload",
+                    "name": "pull_request.base.ref"
+                  }
+                }
+              },
+              {
+                "match": {
+                  "type": "value",
+                  "value": "closed",
+                  "parameter": {
+                    "source": "payload",
+                    "name": "pull_request.state"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "and": [
+              {
+                "match": {
+                  "type": "value",
+                  "value": "push",
+                  "parameter": {
+                    "source": "headers",
+                    "name": "X-GitHub-Event"
+                  }
+                }
+              },
+              {
+                "match": {
+                  "type": "value",
+                  "value": "refs/heads/master",
+                  "parameter": {
+                    "source": "payload",
+                    "name": "ref"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
