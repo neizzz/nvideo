@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+
+    environment {
+      SSH_USER = 'cch'
+      SSH_SERVER_HOST = 'cchsv.duckdns.org'
+      SSH_SERVER_PORT = '30022'
+    }
+
+    stages {
+      stage('Checkout') {
+        steps {
+          script {
+            checkout scm
+            // 최신 태그 가져오기
+            def tag = sh(script: "git describe --tags --exact-match || true", returnStdout: true).trim()
+            // 태그가 없다면 커밋 해시 가져오기
+            if (tag) {
+                currentBuild.displayName = tag
+            } else {
+                def commitHash = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                currentBuild.displayName = commitHash
+            }
+            echo "Build Name: ${currentBuild.displayName}"
+          }
+        }
+      }
+
+      stage('Build') {
+        steps {
+          echo "Build stage"
+          // 빌드 명령어 (예: Gradle, Maven, npm 등)
+          // sh 'npm install'
+          // sh 'npm run build'
+        }
+      }
+
+      stage('Deploy') {
+        steps {
+          echo "Deploy stage"
+          // 배포 명령어 (예: SCP, Rsync, Docker 배포 등)
+          // sh """
+          // rsync -avz --delete ./build/ user@${env.DEPLOY_SERVER}:${env.DEPLOY_PATH}
+          // """
+        }
+      }
+
+      stage('SSH Command Example') {
+        steps {
+          script {
+            sshagent (credentials: ['ssh-key']) {
+              sh "ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_SERVER_HOST} -p ${SSH_SERVER_PORT} '${env.NVIDEO_DEPLOY_SCRIPT_PATH}'"
+            }
+          }
+        }
+      }
+    }
+
+    post {
+      success {
+          echo '배포 성공'
+      }
+      failure {
+          echo '배포 실패'
+      }
+    }
+}
+
