@@ -5,6 +5,7 @@ pipeline {
       SSH_USER = 'cch'
       SSH_SERVER_HOST = 'cchsv.duckdns.org'
       SSH_SERVER_PORT = '30022'
+      BUILD_NAME = 'nvideo-dev'
     }
 
     stages {
@@ -29,15 +30,18 @@ pipeline {
       stage('Build') {
         steps {
           echo "Build stage"
-          // 빌드 명령어 (예: Gradle, Maven, npm 등)
-          // sh 'npm install'
-          // sh 'npm run build'
+          sh 'npm install'
+          sh 'npm run build'
         }
       }
 
       stage('Deploy') {
         steps {
           echo "Deploy stage"
+          sh 'pwd'
+          sh 'ls'
+          sh 'rm -rf ${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}'
+          sh 'cp -r ./dist ${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}'
           // 배포 명령어 (예: SCP, Rsync, Docker 배포 등)
           // sh """
           // rsync -avz --delete ./build/ user@${env.DEPLOY_SERVER}:${env.DEPLOY_PATH}
@@ -45,15 +49,15 @@ pipeline {
         }
       }
 
-      stage('SSH Command Example') {
-        steps {
-          script {
-            sshagent (credentials: ['ssh-key']) {
-              sh "ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_SERVER_HOST} -p ${SSH_SERVER_PORT} '${env.NVIDEO_DEPLOY_SCRIPT_PATH}'"
-            }
-          }
-        }
-      }
+      // stage('SSH Command Example') {
+      //   steps {
+      //     script {
+            // sshagent (credentials: ['ssh-key']) {
+            //   sh "ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_SERVER_HOST} -p ${SSH_SERVER_PORT} '${env.NVIDEO_DEPLOY_SCRIPT_PATH}'"
+            // }
+      //     }
+      //   }
+      // }
     }
 
     post {
