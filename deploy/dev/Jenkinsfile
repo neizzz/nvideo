@@ -33,7 +33,6 @@ pipeline {
 
       stage('Build') {
         steps {
-          echo "Build stage"
           sh 'npm install'
           sh 'npm run build:dev'
         }
@@ -41,15 +40,11 @@ pipeline {
 
       stage('Deploy') {
         steps {
-          echo "Deploy stage"
-          sh 'pwd'
-          sh 'ls'
-          sh 'rm -rf ${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}'
-          sh 'cp -r ./dist ${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}'
-          // 배포 명령어 (예: SCP, Rsync, Docker 배포 등)
-          // sh """
-          // rsync -avz --delete ./build/ user@${env.DEPLOY_SERVER}:${env.DEPLOY_PATH}
-          // """
+          sh "rm -rf '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}'"
+          sh "mkdir -p '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/frontend'"
+          sh "mkdir -p '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/backend'"
+          sh "cp -r ./packages/apps/frontend/dist '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/frontend'"
+          sh "cp -r ./packages/apps/backend/dist '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/backend'"
         }
       }
 
