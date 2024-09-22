@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs "NodeJS_20"
+    }
+
     environment {
       SSH_USER = 'cch'
       SSH_SERVER_HOST = 'cchsv.duckdns.org'
