@@ -43,17 +43,17 @@ pipeline {
           sh "rm -rf '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}'"
           sh "mkdir -p '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/frontend'"
           sh "mkdir -p '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/backend'"
-          sh "cp -r ./packages/apps/frontend/dist '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/frontend'"
-          sh "cp -r ./packages/apps/backend/dist '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/backend'"
+          sh "cp -r ./packages/apps/frontend/dist/* '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/frontend'"
+          sh "cp -r ./packages/apps/backend/dist/* '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/backend'"
         }
       }
 
       // stage('SSH Command Example') {
       //   steps {
       //     script {
-            // sshagent (credentials: ['ssh-key']) {
-            //   sh "ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_SERVER_HOST} -p ${SSH_SERVER_PORT} '${env.NVIDEO_DEPLOY_SCRIPT_PATH}'"
-            // }
+      //       sshagent (credentials: ['ssh-key']) {
+      //         sh "ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_SERVER_HOST} -p ${SSH_SERVER_PORT} '${env.NVIDEO_DEPLOY_SCRIPT_PATH}'"
+      //       }
       //     }
       //   }
       // }
