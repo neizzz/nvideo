@@ -11,7 +11,10 @@ function App() {
       <div className="card">
         <button
           onClick={() => {
-            fetch(__NVIDEO_API_URL__);
+            fetch(__NVIDEO_API_URL__).then(async res => {
+              const imageUrl = await res.json();
+              setStr(imageUrl);
+            });
           }}
         >
           str: {str}

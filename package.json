@@ -9,7 +9,8 @@
   "scripts": {
     "start": "concurrently \"npm run start:fe\" \"npm run start:be\"",
     "start:fe": "npm run start --workspace=@nvideo/frontend",
-    "start:be": "npm run start --workspace=@nvideo/backend"
+    "start:be": "npm run start --workspace=@nvideo/backend",
+    "build:dev": "npm run build:dev --workspaces"
   },
   "git": "https://github.com/neizzz/nvideo",
   "author": "",
