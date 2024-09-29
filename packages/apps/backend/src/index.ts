@@ -6,8 +6,14 @@ const jwt = require('jsonwebtoken');
 const app = express();
 app.use(express.json());
 
+const PORT = process.env.PORT ?? 80;
 const OTP_SECRET_KEY = 'nvideo';
 const JWT_SECRET_KEY = 'your_jwt_secret_key'; // JWT 비밀 키
+
+// test:
+app.get('/', (req, res) => {
+  res.json('test');
+});
 
 // QR 코드 생성 및 TOTP 비밀 키 발급 (사용자가 처음 등록할 때)
 app.post('/register', (req, res) => {
@@ -68,7 +74,6 @@ app.get('/protected', (req, res) => {
   });
 });
 
-const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
