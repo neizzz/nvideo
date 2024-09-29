@@ -45,6 +45,7 @@ pipeline {
           sh "mkdir -p '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/backend'"
           sh "cp -r ./packages/apps/frontend/dist/* '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/frontend'"
           sh "cp -r ./packages/apps/backend/dist/* '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/backend'"
+          sh "cp ./packages/apps/backend/package*.json '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/backend'"
 
           // nginx
           sh "cp -r ./nginx '${env.BUILD_OUTPUT_PATH}/${BUILD_NAME}/nginx'"
